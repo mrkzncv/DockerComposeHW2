@@ -13,16 +13,13 @@ services:
         build:
             context: ./worker
             dockerfile: Dockerfile
-        # restart: always
         volumes:
-            # - ./worker/data :/worker/data #
             - ./worker/models :/worker/models
         depends_on:
             - redis
     redis:
         image: redis # уже из DockerHub готовый
     database:
-#        container_name: postgres
         image: postgres:12.1-alpine
         ports:
             - "5432:5432"
