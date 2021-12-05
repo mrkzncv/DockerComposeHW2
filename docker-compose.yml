@@ -1,0 +1,32 @@
+version: '2'
+services:
+    web:
+        build:
+            context: ./flask-app
+            dockerfile: Dockerfile
+        restart: always
+        ports:
+            - "5000:5000"
+        depends_on:
+            - redis
+    worker:
+        build:
+            context: ./worker
+            dockerfile: Dockerfile
+        # restart: always
+        volumes:
+            # - ./worker/data :/worker/data #
+            - ./worker/models :/worker/models
+        depends_on:
+            - redis
+    redis:
+        image: redis # уже из DockerHub готовый
+    database:
+#        container_name: postgres
+        image: postgres:12.1-alpine
+        ports:
+            - "5432:5432"
+        volumes:
+            - db_volume:/var/lib/postgresql
+volumes:
+    db_volume:
